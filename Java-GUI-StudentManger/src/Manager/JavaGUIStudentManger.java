@@ -21,8 +21,9 @@ public class JavaGUIStudentManger {
         // TODO code application logic here
         //new Login();
         try {
-             //new Login();
-             new View();
+            //new Login();
+            new View();
+            //new Login();
         } catch (Exception e) {
         }
     }

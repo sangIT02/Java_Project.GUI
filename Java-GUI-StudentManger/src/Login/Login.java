@@ -68,7 +68,7 @@ public class Login extends JFrame{
         tpass.setFont(new Font("Arial", Font.PLAIN, 18));
         tpass.setBorder(border);
         
-        Controller ac = new Controller(this);
+        ControllerLogin ac = new ControllerLogin(this);
         login = new JButton("Login");
         login.setFont(new Font("Arial", Font.PLAIN, 18));
         login.addActionListener(ac);
