@@ -40,6 +40,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -50,6 +51,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -159,7 +161,7 @@ public class View extends JFrame implements Comparable<Student>{
         
         Font italic = new Font("Arial",Font.ITALIC,20);
         tid = new JTextField("Nhập Mã Số Sinh Viên");
-        tid.setHorizontalAlignment(SwingConstants.CENTER);
+        //tid.setHorizontalAlignment(SwingConstants.CENTER);
         tid.setFont(italic);
         tid.setForeground(Color.GRAY);
         tid.addFocusListener(new FocusListener() {
@@ -185,10 +187,10 @@ public class View extends JFrame implements Comparable<Student>{
        
         tid.setPreferredSize(new Dimension(300, 40));
         tid.setBorder(new LineBorder(Color.BLACK));
-        tname = new JTextField("Nhập Họ Tên");
+        tname = new JTextField("Nhập Họ Tên Sinh Viên");
         tname.setFont(italic);
         tname.setForeground(Color.GRAY);
-        tname.setHorizontalAlignment(SwingConstants.CENTER);
+        //tname.setHorizontalAlignment(SwingConstants.CENTER);
         tname.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -202,7 +204,7 @@ public class View extends JFrame implements Comparable<Student>{
             public void focusLost(FocusEvent e) {
                 // Xử lý khi mất focus
                 if (tname.getText().isEmpty()) {
-                    tname.setText("Nhập Họ Tên");
+                    tname.setText("Nhập Họ Tên Sinh Viên");
                     tname.setForeground(Color.GRAY);
                     tname.setFont(new Font("Arial",Font.ITALIC,20));
                 }
@@ -233,7 +235,7 @@ public class View extends JFrame implements Comparable<Student>{
 
         temail = new JTextField("Jessica69@gmail.com");
         temail.setFont(italic);
-        temail.setHorizontalAlignment(SwingConstants.CENTER);
+        //temail.setHorizontalAlignment(SwingConstants.CENTER);
         temail.setForeground(Color.gray);
         temail.addFocusListener(new FocusListener() {
             @Override
@@ -257,8 +259,8 @@ public class View extends JFrame implements Comparable<Student>{
         temail.setBorder(new LineBorder(Color.BLACK));
 
         tphone = new JTextField("0123456789");
-        tphone.setFont(f);
-        tphone.setHorizontalAlignment(SwingConstants.CENTER);
+        tphone.setFont(italic);
+        //tphone.setHorizontalAlignment(SwingConstants.CENTER);
         tphone.setForeground(Color.GRAY);
         tphone.addFocusListener(new FocusListener() {
             @Override
@@ -281,9 +283,9 @@ public class View extends JFrame implements Comparable<Student>{
         });
         tphone.setBorder(new LineBorder(Color.BLACK));
 
-        tgpa = new JTextField();
+        tgpa = new JTextField("Nhập GPA");
         tgpa.setFont(italic);
-        tgpa.setHorizontalAlignment(SwingConstants.CENTER);
+        //tgpa.setHorizontalAlignment(SwingConstants.CENTER);
 
         tgpa.setBorder(new LineBorder(Color.BLACK));
         tgpa.setForeground(Color.gray);
@@ -426,10 +428,26 @@ public class View extends JFrame implements Comparable<Student>{
         btn.setBorder(new EmptyBorder(30, 30, 30, 30));
        
         
-        tsearch = new JTextField();
-        tsearch.setFont(f);
+        tsearch = new JTextField("Nhập Họ Tên Sinh Viên");
+        tsearch.setForeground(Color.GRAY);
+        tsearch.setFont(italic);
         tsearch.setPreferredSize(new Dimension(150, 20));
         tsearch.setBorder(new LineBorder(Color.BLACK,2));
+        tsearch.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                tsearch.setText("");
+                tsearch.setFont(new Font("Arial",Font.PLAIN,20));
+                tsearch.setForeground(Color.BLACK);            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                    if (tsearch.getText().isEmpty()) {
+                    tsearch.setText("Nhập Họ Tên Sinh Viên");
+                    tsearch.setForeground(Color.GRAY);
+                    tsearch.setFont(new Font("Arial",Font.ITALIC,20));
+                }            }
+        });
         search = new JButton("Search", icon_search);
         search.setBackground(Color.DARK_GRAY);
         search.setForeground(Color.white);        
@@ -543,28 +561,98 @@ public class View extends JFrame implements Comparable<Student>{
         Iterator<Student> it = list.iterator();
        
         if(tid.getText().equals("Nhập Mã Số Sinh Viên")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống MSSV");
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống MSSV");
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống MSSV!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        // Tạo JDialog từ JOptionPane
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
-        else if(tname.getText().equals("Nhập Họ Tên")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Họ Tên");
+        else if(tname.getText().equals("Nhập Họ Tên Sinh Viên")){
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Họ Tên");
+            
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Họ Tên!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
         else if(tage.getSelectedIndex() == -1){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Tuổi");
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Tuổi");
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Tuổi!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         } 
         else if(!nam.isSelected() && !nu.isSelected()){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Giới Tính"); 
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Giới Tính"); 
+            
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Chọn Giới Tính!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(350, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
         else if(tadd.getSelectedItem().equals("")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Địa Chỉ!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(420, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
         else if(temail.getText().equals("Jessica69@gmail.com")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Email!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
         else if(tphone.getText().equals("0123456789")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
+            
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Số Điện Thoại!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(470, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
         else if(tgpa.getText().equals("Nhập GPA")){
-            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống GPA");
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống GPA");
+             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống MSSV");
+            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống GPA!",
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION);
+
+        // Tạo JDialog từ JOptionPane
+        JDialog dialog = optionPane.createDialog(null, "Notification");
+        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
+        dialog.setVisible(true);
         }
 
         else{
@@ -658,9 +746,17 @@ public class View extends JFrame implements Comparable<Student>{
 //            DefaultTableModel tm = (DefaultTableModel) table.getModel();
 //            int i_row = table.getSelectedRow();
             try {
-            Luu();
+                int i_row = table.getSelectedRow();
+                if(i_row != -1){
+                    Luu();
+                }
+                else{
+                    throw new Exception();
+                }
+            
             
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Bạn Chưa Chọn Sinh Viên Nào Để Sửa");
         }
         
        
@@ -687,14 +783,21 @@ public class View extends JFrame implements Comparable<Student>{
 
     }
     public void XoaStudent() throws FileNotFoundException {
+        UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+
         DefaultTableModel md = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-        int lc = JOptionPane.showConfirmDialog(this, "Co muon xoa Student nay? ");
-        if (lc == JOptionPane.YES_OPTION) {
+        if(i_row != -1){
+              int lc = JOptionPane.showConfirmDialog(this, "Bạn Có Muốn Xoá Sinh Viên Này? ");
+            if (lc == JOptionPane.YES_OPTION) {
             Student s = getDelStudent();
             md.removeRow(i_row);
             list.remove(i_row);
             WriteFile(file);
+        }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Bạn Chưa Chọn Sinh Viên Muốn Xoá");
         }
     }
 
@@ -728,17 +831,13 @@ public class View extends JFrame implements Comparable<Student>{
         WriteFile(file);
     }
 
- 
-
-    
-    
-
 
     public void ReadFile() {
-        String nf = JOptionPane.showInputDialog(null  , "Nhập Tên File Danh Sách Sinh Viên");
-        file = new File(nf);
-        
+        UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+       
          try {
+            String nf = JOptionPane.showInputDialog(null  , "Nhập Tên File Danh Sách Sinh Viên");
+            file = new File(nf);
             FileInputStream fis = new FileInputStream(file);
             Scanner ip = new Scanner(fis);
             ArrayList<Student> listStudent = new ArrayList<Student>();
@@ -944,7 +1043,7 @@ public class View extends JFrame implements Comparable<Student>{
         huy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.exit(0);
+                luu.setVisible(false);
             }
         });
         
@@ -953,14 +1052,9 @@ public class View extends JFrame implements Comparable<Student>{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(i_row < 0){
                         save();
-                    }
-                    else{
-                        JOptionPane.showConfirmDialog(null, "Bạn Chưa Chọn Sinh Viên Muốn Sửa");
-                    }
+                        luu.setVisible(false);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -1031,6 +1125,7 @@ public class View extends JFrame implements Comparable<Student>{
             ShowResult();
             WriteFile(file);
             JOptionPane.showMessageDialog(null, "Lưu Thành công");
+            
     }
 }
     
