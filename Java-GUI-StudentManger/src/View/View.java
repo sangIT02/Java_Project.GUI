@@ -62,6 +62,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import model.Address;
 import model.Student;
 
@@ -119,7 +121,7 @@ public class View extends JFrame implements Comparable<Student>{
 
     private void init() {
         this.setSize(1200,600);
-        this.setTitle("Student manager");
+        this.setTitle("QUẢN LÝ SINH VIÊN");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Đặt kích thước cho JFrame bằng với kích thước màn hình
@@ -428,6 +430,14 @@ public class View extends JFrame implements Comparable<Student>{
         table = new JTable(model);
         table.setPreferredScrollableViewportSize(new Dimension(1140, 570));
         table.setBackground(Color.LIGHT_GRAY);
+        table.getColumnModel().getColumn(0).setPreferredWidth(120);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(5).setPreferredWidth(170);
+        table.getColumnModel().getColumn(6).setPreferredWidth(170);
+        table.getColumnModel().getColumn(7).setPreferredWidth(80);
         jsp = new JScrollPane(table);
         JPanel p_table = new JPanel();
         p_table.add(jsp);
@@ -625,6 +635,7 @@ public class View extends JFrame implements Comparable<Student>{
     
     
     public void ShowResult(){
+       
         Object s[][] = new Object[list.size()][8];
         for (int i = 0; i < list.size(); i++) {
             Student n = list.get(i);
@@ -642,6 +653,14 @@ public class View extends JFrame implements Comparable<Student>{
             "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
         };
         table.setModel(new DefaultTableModel(s, cname));
+        table.getColumnModel().getColumn(0).setPreferredWidth(120);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(5).setPreferredWidth(170);
+        table.getColumnModel().getColumn(6).setPreferredWidth(170);
+        table.getColumnModel().getColumn(7).setPreferredWidth(80);
     }
     
     public void addStudent() throws FileNotFoundException {
@@ -790,11 +809,12 @@ public class View extends JFrame implements Comparable<Student>{
             s[i][7] = n.getGpa();
             
         }
-        Object cname[] = {
-            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
-        };
-        table.setModel(new DefaultTableModel(s, cname));
+//        Object cname[] = {
+//            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
+//        };
+//        table.setModel(new DefaultTableModel(s, cname));
         //model.setDataVector(s, columname);
+        ShowResult();
         WriteFile(file);
     }
 
@@ -865,10 +885,11 @@ public class View extends JFrame implements Comparable<Student>{
             s[i][7] = n.getGpa();
             
         }
-        Object cname[] = {
-            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
-        };
-        table.setModel(new DefaultTableModel(s, cname));
+//        Object cname[] = {
+//            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
+//        };
+//        table.setModel(new DefaultTableModel(s, cname));
+        ShowResult();
         WriteFile(file);
     }
 
@@ -1017,10 +1038,10 @@ public class View extends JFrame implements Comparable<Student>{
         Border bd = new EmptyBorder(0, 0, 0, 0);
         Font f18 = new Font("Arial",Font.ITALIC,18);
         xa = new JTextField("Xã");
-         xa.setFont(f18);
-         xa.setForeground(Color.GRAY);
-         xa.setBorder(new EmptyBorder(0, 0, 0, 0));
-         xa.addFocusListener(new FocusListener() {
+        xa.setFont(f18);
+        xa.setForeground(Color.GRAY);
+        xa.setBorder(new EmptyBorder(0, 0, 0, 0));
+        xa.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 // Xử lý khi nhận focus
@@ -1086,6 +1107,7 @@ public class View extends JFrame implements Comparable<Student>{
             }
         });
         
+         //tạo textfield nhập email
         temail = new JTextField("Jessica69@gmail.com");
         temail.setFont(italic);
         //temail.setBorder(bottomBorder);
@@ -1110,6 +1132,7 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
+        // tạo textfield nhập SĐT
         tphone = new JTextField("0123456789");
         tphone.setFont(italic);
         //tphone.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1134,10 +1157,10 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
+        // tạo textfield nhập điểm gpa
         tgpa = new JTextField("Nhập GPA");
         tgpa.setFont(italic);
         //tgpa.setHorizontalAlignment(SwingConstants.CENTER);
-
         tgpa.setForeground(Color.gray);
         tgpa.addFocusListener(new FocusListener() {
             @Override
@@ -1158,17 +1181,18 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
-
+        
         nam = new JRadioButton("Nam");
         nam.setFont(f);
-
         nu = new JRadioButton("Nữ");
         nu.setFont(f);
         
+        // panel chứa các textfield dữ liệu
         JPanel text = new JPanel(new GridLayout(7, 1, 10, 10));
         
         Border b = new EmptyBorder(20, 0, 20, 20);
         text.setBorder(b);
+        // thêm các textfield vào panel text
         JPanel s2 = new JPanel(new BorderLayout(10, 10));
         JPanel s3 = new JPanel(new BorderLayout(10, 10));
         JPanel s4 = new JPanel(new BorderLayout(10, 10));
@@ -1199,10 +1223,12 @@ public class View extends JFrame implements Comparable<Student>{
         s7.add(phone,BorderLayout.WEST);
         s8.add(gpa,BorderLayout.WEST);
         
+        // panel chứa textfield địa chỉ
         JPanel p_add = new JPanel(new GridLayout(1, 3, 0, 0));
         p_add.add(xa);
         p_add.add(huyen);
         p_add.add(tinh);
+        
         s2.add(tname,BorderLayout.CENTER);
         s3.add(tage,BorderLayout.CENTER);
         s4.add(p4,BorderLayout.CENTER);
@@ -1346,11 +1372,9 @@ public class View extends JFrame implements Comparable<Student>{
             xa.setFont(new Font("Arial",Font.ITALIC,18));
             huyen.setText("Huyện");
             huyen.setForeground(g);
-
             huyen.setFont(new Font("Arial",Font.ITALIC,18)); 
             tinh.setText("Tỉnh");
             tinh.setForeground(g);
-
             tinh.setFont(new Font("Arial",Font.ITALIC,18));
             temail.setText("Jessica69@gmail.com");
             temail.setFont(i);
