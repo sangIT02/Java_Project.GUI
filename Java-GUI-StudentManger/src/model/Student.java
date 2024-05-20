@@ -4,21 +4,23 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author PC
  */
-public class Student {
+public class Student implements Serializable{
     private String id;
     private String name;
     private int age;
     private String gender;
-    private String address;
+    private Address address;
     private String email;
     private String phone;
     private double gpa;
 
-    public Student(String id, String name, int age, String gender, String address, String email, String phone, double gpa) {
+    public Student(String id, String name, int age, String gender, Address address, String email, String phone, double gpa) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -30,6 +32,7 @@ public class Student {
     }
 
     public Student() {
+        address = new Address();
     }
 
     public String getId() {
@@ -64,11 +67,11 @@ public class Student {
         this.gender = gender;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -94,6 +97,11 @@ public class Student {
 
     public void setGpa(double gpa) {
         this.gpa = gpa;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" + "id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", address=" + address.toString() + ", email=" + email + ", phone=" + phone + ", gpa=" + gpa + '}';
     }
     
     

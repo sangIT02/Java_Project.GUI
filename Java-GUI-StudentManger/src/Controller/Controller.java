@@ -5,11 +5,18 @@
 package Controller;
 
 import View.View;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -46,31 +53,46 @@ public class Controller implements ActionListener{
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
        }
-       if(s.equals("Sort By Name")){
+       if(s.equals("Sắp Xếp Theo Họ Tên")){
             try {
                 view.SortByName();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
        }
-       if(s.equals("Sort By GPA")){
+       if(s.equals("Sắp Xếp Theo GPA")){
             try {
                 view.SortByGPA();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
        }
-       if(s.equals("Read from file")){
-           view.ReadFile();
+       if(s.equals("Mở File")){
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setPreferredSize(new Dimension(800,500));
+            // Hiển thị hộp thoại mở file
+            int returnValue = fileChooser.showOpenDialog(null);
+            // Kiểm tra xem người dùng có chọn file hay không
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                // Thực hiện các xử lý cần thiết với file đã chọn
+                view.ReadFile(selectedFile);
+            }
+    
                    
        }
-       if(s.equals("Exit")){
-           System.exit(0);
+       if(s.equals("Thoát")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            var n = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát", "Thoát", JOptionPane.OK_OPTION);
+            if(n == JOptionPane.YES_OPTION)
+            System.exit(0);
        }
-       if(s.equals("Search")){
+       if(s.equals("Tìm Kiếm")){
            view.Search();
        }
-       if(s.equals("Refresh")){
+       if(s.equals("Làm Mới")){
            view.Refresh();
        }
     }

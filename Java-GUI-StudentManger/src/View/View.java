@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.List;
 import static java.awt.PageAttributes.MediaType.C;
+import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +45,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -57,6 +62,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
+import model.Address;
 import model.Student;
 
 /**
@@ -88,6 +94,11 @@ public class View extends JFrame implements Comparable<Student>{
     private JTextField tphone;
     private JTextField tgpa;
     
+    private  JTextField xa;
+    private  JTextField huyen;
+    private  JTextField tinh;
+
+    
     private JButton add;
     private JButton update;
     private JButton del;
@@ -107,11 +118,15 @@ public class View extends JFrame implements Comparable<Student>{
     }
 
     private void init() {
-        this.setSize(1000, 800);
+        this.setSize(1200,600);
         this.setTitle("Student manager");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Đặt kích thước cho JFrame bằng với kích thước màn hình
+        this.setSize(screenSize.width, screenSize.height-50);
         //this.setLocationRelativeTo();
-        this.setLocation(50, 25);
-        this.setLayout(new BorderLayout(10, 10));
+        this.setLocation(0, 0);
+        this.setLayout(new BorderLayout(0, 0));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         list = new ArrayList<Student>();
@@ -133,36 +148,41 @@ public class View extends JFrame implements Comparable<Student>{
         ImageIcon icon_search = new ImageIcon(ssearch);
 
         Font f = new Font("Arial", Font.BOLD, 16);
+        Font plain = new Font("Arial",Font.BOLD,20);
         JPanel dl = new JPanel(new GridLayout(8, 2, 10, 10));
-        id = new JLabel("MSSV");
-        id.setHorizontalAlignment(SwingConstants.CENTER);
-        id.setFont(f);
+        id = new JLabel("Mã Số Sinh Viên");
+        id.setHorizontalAlignment(SwingConstants.LEFT);
+        id.setFont(new Font("Arial",Font.BOLD,20) {
+        });
         name = new JLabel("Họ Tên");
-        name.setHorizontalAlignment(SwingConstants.CENTER);
-        name.setFont(f);
+        name.setHorizontalAlignment(SwingConstants.LEFT);
+        name.setFont(plain);
         age = new JLabel("Tuổi");
-        age.setHorizontalAlignment(SwingConstants.CENTER);
-        age.setFont(f);
+        age.setHorizontalAlignment(SwingConstants.LEFT);
+        age.setFont(plain);
         address = new JLabel("Địa Chỉ");
-        address.setHorizontalAlignment(SwingConstants.CENTER);
-        address.setFont(f);
+        address.setHorizontalAlignment(SwingConstants.LEFT);
+        address.setPreferredSize(new Dimension(100,50));
+        address.setFont(plain);
         email = new JLabel("Email");
-        email.setHorizontalAlignment(SwingConstants.CENTER);
-        email.setFont(f);
+        email.setHorizontalAlignment(SwingConstants.LEFT);
+        email.setFont(plain);
         phone = new JLabel("Số ĐT");
-        phone.setHorizontalAlignment(SwingConstants.CENTER);
-        phone.setFont(f);
+        phone.setHorizontalAlignment(SwingConstants.LEFT);
+        phone.setFont(plain);
         gpa = new JLabel("GPA");
-        gpa.setHorizontalAlignment(SwingConstants.CENTER);
-        gpa.setFont(f);
+        gpa.setHorizontalAlignment(SwingConstants.LEFT);
+        gpa.setFont(plain);
         gender = new JLabel("Giới Tính");
-        gender.setHorizontalAlignment(SwingConstants.CENTER);
-        gender.setFont(f);
+        gender.setHorizontalAlignment(SwingConstants.LEFT);
+        gender.setFont(plain);
         
         Font italic = new Font("Arial",Font.ITALIC,20);
         tid = new JTextField("Nhập Mã Số Sinh Viên");
         //tid.setHorizontalAlignment(SwingConstants.CENTER);
         tid.setFont(italic);
+        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
+        tid.setBorder(bottomBorder);
         tid.setForeground(Color.GRAY);
         tid.addFocusListener(new FocusListener() {
             @Override
@@ -185,8 +205,7 @@ public class View extends JFrame implements Comparable<Student>{
         });
         
        
-        tid.setPreferredSize(new Dimension(300, 40));
-        tid.setBorder(new LineBorder(Color.BLACK));
+        //tid.setPreferredSize(new Dimension(300, 40));
         tname = new JTextField("Nhập Họ Tên Sinh Viên");
         tname.setFont(italic);
         tname.setForeground(Color.GRAY);
@@ -210,14 +229,14 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
-        tname.setBorder(new LineBorder(Color.BLACK));
+        tname.setBorder(bottomBorder);
          Integer[] ages = new Integer[101];
         for (int i = 1; i <= 100; i++) {
             ages[i] = i;
         }
         tage = new JComboBox<>(ages);
+        tage.setBackground(Color.WHITE);
         tage.setFont(f);
-
         Object o[] = {"",
             "An Giang", "Bà Rịa – Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh",
             "Bến Tre", "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", 
@@ -230,11 +249,12 @@ public class View extends JFrame implements Comparable<Student>{
             "Thừa Thiên Huế", "Tiền Giang", "TP Hồ Chí Minh", "Trà Vinh", "Tuyên Quang", "Vĩnh Long", 
             "Vĩnh Phúc", "Yên Bái"
         };
-        tadd = new JComboBox(o);
-        tadd.setFont(f);
+//        tadd = new JComboBox(o);
+//        tadd.setFont(f);
 
         temail = new JTextField("Jessica69@gmail.com");
         temail.setFont(italic);
+        temail.setBorder(bottomBorder);
         //temail.setHorizontalAlignment(SwingConstants.CENTER);
         temail.setForeground(Color.gray);
         temail.addFocusListener(new FocusListener() {
@@ -256,12 +276,11 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
-        temail.setBorder(new LineBorder(Color.BLACK));
-
         tphone = new JTextField("0123456789");
         tphone.setFont(italic);
         //tphone.setHorizontalAlignment(SwingConstants.CENTER);
         tphone.setForeground(Color.GRAY);
+        tphone.setBorder(bottomBorder);
         tphone.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -281,13 +300,10 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
-        tphone.setBorder(new LineBorder(Color.BLACK));
-
         tgpa = new JTextField("Nhập GPA");
         tgpa.setFont(italic);
         //tgpa.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tgpa.setBorder(new LineBorder(Color.BLACK));
         tgpa.setForeground(Color.gray);
         tgpa.addFocusListener(new FocusListener() {
             @Override
@@ -308,14 +324,16 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
+        tgpa.setBorder(bottomBorder);
         nam = new JRadioButton("Nam");
         nam.setFont(f);
 
         nu = new JRadioButton("Nữ");
         nu.setFont(f);
-
+        nam.setBackground(Color.white);
+        nu.setBackground(Color.white);
         Object cname[] = {
-            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
+            "MÃ SỐ SINH VIÊN","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
         };
         Object data[][] = {
             
@@ -324,31 +342,91 @@ public class View extends JFrame implements Comparable<Student>{
          p4.add(nam);
          p4.add(nu);
         
-        dl.setBorder(BorderFactory.createLoweredBevelBorder());
-        dl.add(id);
-        dl.add(tid);
-        dl.add(name);
-        dl.add(tname);
-        dl.add(age);
-        dl.add(tage);
-        dl.add(gender);
-        dl.add(p4);
-        dl.add(address);
-        dl.add(tadd);
-        dl.add(phone);
-        dl.add(tphone);
-        dl.add(email);
-        dl.add(temail);
-        dl.add(gpa);
-        dl.add(tgpa);
+         JPanel p5 = new JPanel(new GridLayout(1    , 3, 0  , 2));
+         Font f18 = new Font("Arial",Font.ITALIC,18);
+         Border rb = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK);
+         xa = new JTextField("Xã");
+         xa.setFont(f18);
+         xa.setForeground(Color.GRAY);
+         xa.setBorder(new EmptyBorder(0, 0, 0, 0));
+         xa.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                xa.setText("");
+                xa.setFont(new Font("Arial",Font.PLAIN,18));
+                xa.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (xa.getText().isEmpty()) {
+                    xa.setText("Xã");
+                    xa.setForeground(Color.GRAY);
+                    xa.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+         huyen = new JTextField("Huyện");
+         huyen.setFont(f18);
+         huyen.setForeground(Color.GRAY);
+         huyen.setBorder(new EmptyBorder(0, 0, 0, 0));
+         huyen.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                huyen.setText("");
+                huyen.setFont(new Font("Arial",Font.PLAIN,18));
+                huyen.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (huyen.getText().isEmpty()) {
+                    huyen.setText("Huyện");
+                    huyen.setForeground(Color.GRAY);
+                    huyen.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+         tinh = new JTextField("Tỉnh");
+         tinh.setFont(f18);
+         tinh.setForeground(Color.GRAY);
+         tinh.setBorder(new EmptyBorder(0, 0, 0, 0));
+         tinh.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                tinh.setText("");
+                tinh.setFont(new Font("Arial",Font.PLAIN,18));
+                tinh.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (tinh.getText().isEmpty()) {
+                    tinh.setText("Tỉnh");
+                    tinh.setForeground(Color.GRAY);
+                    tinh.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+         p5.setBackground(Color.WHITE);
+         p5.add(xa);
+         p5.add(huyen);
+         p5.add(tinh);
+         
+      
         //dl.setPreferredSize(new Dimension(400, 400));
         dl.setBorder(new LineBorder(Color.GRAY, 3));
-//        dl.add(address);
-//        dl.add(address);
+
 
         model = new DefaultTableModel(data, cname);
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 500));
+        table.setPreferredScrollableViewportSize(new Dimension(1140, 570));
         table.setBackground(Color.LIGHT_GRAY);
         jsp = new JScrollPane(table);
         JPanel p_table = new JPanel();
@@ -383,35 +461,35 @@ public class View extends JFrame implements Comparable<Student>{
         update.setBorder(bl);
         update.addActionListener(ac);
 
-        sortbtgpa = new JButton("Sort By GPA");
+        sortbtgpa = new JButton("Sắp Xếp Theo GPA");
         sortbtgpa.setBackground(Color.DARK_GRAY);
         sortbtgpa.setForeground(Color.white);
         sortbtgpa.setBorder(bl);
         sortbtgpa.setFont(f);
         sortbtgpa.addActionListener(ac);
 
-        sortbyname = new JButton("Sort By Name");
+        sortbyname = new JButton("Sắp Xếp Theo Họ Tên");
         sortbyname.setBackground(Color.DARK_GRAY);
         sortbyname.setForeground(Color.white);        
         sortbyname.setFont(f);
         sortbyname.setBorder(bl);
         sortbyname.addActionListener(ac);
 
-        exit = new JButton("Exit");
+        exit = new JButton("Thoát");
         exit.setBackground(Color.DARK_GRAY);
         exit.setForeground(Color.white);        
         exit.setBorder(bl);
         exit.setFont(f);
         exit.addActionListener(ac);
 
-        readfile = new JButton("Read from file");
+        readfile = new JButton("Mở File");
         readfile.setBorder(bl);
         readfile.setBackground(Color.DARK_GRAY);
         readfile.setForeground(Color.white);        
         readfile.setFont(f);
         readfile.addActionListener(ac);
         
-        refresh = new JButton("Refresh");
+        refresh = new JButton("Làm Mới");
         refresh.setBorder(bl);
         refresh.setBackground(Color.DARK_GRAY);
         refresh.setForeground(Color.white);        
@@ -425,7 +503,7 @@ public class View extends JFrame implements Comparable<Student>{
         btn.add(sortbtgpa);
         btn.add(readfile);
         btn.add(exit);
-        btn.setBorder(new EmptyBorder(30, 30, 30, 30));
+        btn.setBorder(new EmptyBorder(10, 30, 10, 30));
        
         
         tsearch = new JTextField("Nhập Họ Tên Sinh Viên");
@@ -448,7 +526,7 @@ public class View extends JFrame implements Comparable<Student>{
                     tsearch.setFont(new Font("Arial",Font.ITALIC,20));
                 }            }
         });
-        search = new JButton("Search", icon_search);
+        search = new JButton("Tìm Kiếm", icon_search);
         search.setBackground(Color.DARK_GRAY);
         search.setForeground(Color.white);        
         search.setFont(f);
@@ -463,7 +541,7 @@ public class View extends JFrame implements Comparable<Student>{
         bt_se_re.add(search);
         bt_se_re.add(refresh);
         p_search.add(bt_se_re,BorderLayout.EAST);
-        p_search.setBorder(new EmptyBorder(10, 800, 10, 20));
+        p_search.setBorder(new EmptyBorder(10, 800, 0, 20));
         
         JPanel p_center = new JPanel(new BorderLayout(20, 20));
         JLabel head = new JLabel("QUẢN LÝ SINH VIÊN");
@@ -471,15 +549,26 @@ public class View extends JFrame implements Comparable<Student>{
         head.setFont(new Font("Arial",Font.BOLD,30));
         
         
-        JPanel pn = new JPanel(new GridLayout(8, 1, 10, 10));
-        JPanel s1 = new JPanel(new BorderLayout(10, 10));
-        JPanel s2 = new JPanel(new BorderLayout(10, 10));
-        JPanel s3 = new JPanel(new BorderLayout(10, 10));
-        JPanel s4 = new JPanel(new BorderLayout(10, 10));
-        JPanel s5 = new JPanel(new BorderLayout(10, 10));
-        JPanel s6 = new JPanel(new BorderLayout(10, 10));
-        JPanel s7 = new JPanel(new BorderLayout(10, 10));
-        JPanel s8 = new JPanel(new BorderLayout(10, 10));
+        JPanel pn = new JPanel(new GridLayout(8, 1, 0, 20));
+        pn.setBorder(new EmptyBorder(0, 20, 0, 0));
+        JPanel s1 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s2 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s3 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s4 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s5 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s6 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s7 = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel s8 = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        s1.setBackground(Color.white);
+        s2.setBackground(Color.WHITE);
+        s3.setBackground(Color.WHITE);
+        s4.setBackground(Color.WHITE);
+        //s4.setBorder(bottomBorder);
+        s5.setBackground(Color.WHITE);
+        s6.setBackground(Color.WHITE);
+        s7.setBackground(Color.WHITE);
+        s8.setBackground(Color.WHITE);
 
         //Border b = new EmptyBorder(0, 30, 0, 30);
         Dimension d = new Dimension(350, 40);
@@ -495,23 +584,23 @@ public class View extends JFrame implements Comparable<Student>{
         gpa.setPreferredSize(t);
 
         tid.setPreferredSize(new Dimension(d));
-        s1.add(id,BorderLayout.WEST);
-        s2.add(name,BorderLayout.WEST);
-        s3.add(age,BorderLayout.WEST);
-        s4.add(gender,BorderLayout.WEST);
-        s5.add(address,BorderLayout.WEST);
-        s6.add(email,BorderLayout.WEST);
-        s7.add(phone,BorderLayout.WEST);
-        s8.add(gpa,BorderLayout.WEST);
+        s1.add(id);
+        s2.add(name);
+        s3.add(age);
+        s4.add(gender);
+        s5.add(address);
+        s6.add(email);
+        s7.add(phone);
+        s8.add(gpa);
         
-        s1.add(tid,BorderLayout.CENTER);
-        s2.add(tname,BorderLayout.CENTER);
-        s3.add(tage,BorderLayout.CENTER);
-        s4.add(p4,BorderLayout.CENTER);
-        s5.add(tadd,BorderLayout.CENTER);
-        s6.add(temail,BorderLayout.CENTER);
-        s7.add(tphone,BorderLayout.CENTER);
-        s8.add(tgpa,BorderLayout.CENTER);
+        s1.add(tid);
+        s2.add(tname);
+        s3.add(tage);
+        s4.add(p4);
+        s5.add(p5);
+        s6.add(temail);
+        s7.add(tphone);
+        s8.add(tgpa);
         pn.add(s1);
         pn.add(s2);
         pn.add(s3);
@@ -530,7 +619,7 @@ public class View extends JFrame implements Comparable<Student>{
 
         this.add(p_center,BorderLayout.CENTER);
         this.add(btn,BorderLayout.SOUTH);
-        this.pack();
+        //this.pack();
         this.setVisible(true);
     }
     
@@ -543,7 +632,7 @@ public class View extends JFrame implements Comparable<Student>{
             s[i][1] = n.getName();
             s[i][2] = n.getAge();
             s[i][3] = n.getGender();
-            s[i][4] = n.getAddress();
+            s[i][4] = n.getAddress().getXa()+" - "+n.getAddress().getHuyen()+" - "+n.getAddress().getTinh();
             s[i][5] = n.getPhone();
             s[i][6] = n.getEmail();
             s[i][7] = n.getGpa();
@@ -562,97 +651,52 @@ public class View extends JFrame implements Comparable<Student>{
        
         if(tid.getText().equals("Nhập Mã Số Sinh Viên")){
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống MSSV");
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống MSSV!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        // Tạo JDialog từ JOptionPane
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Mã Sinh Viên");
+           
         }
         else if(tname.getText().equals("Nhập Họ Tên Sinh Viên")){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Họ Tên");
-            
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Họ Tên!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Họ Tên");
         }
         else if(tage.getSelectedIndex() == -1){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Tuổi");
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Tuổi!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Tuổi");
+            
         } 
         else if(!nam.isSelected() && !nu.isSelected()){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Giới Tính"); 
-            
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Chọn Giới Tính!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(350, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Giới Tính"); 
+        
         }
-        else if(tadd.getSelectedItem().equals("")){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+        else if(xa.getText().equals("Xã")){
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Địa Chỉ!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(420, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+        
+        }
+        else if(huyen.getText().equals("Huyện")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+           
+        }
+        else if(tinh.getText().equals("Tỉnh")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+            
         }
         else if(temail.getText().equals("Jessica69@gmail.com")){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Email!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
+           
         }
         else if(tphone.getText().equals("0123456789")){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
-            
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống Số Điện Thoại!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(470, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
+      
         }
         else if(tgpa.getText().equals("Nhập GPA")){
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống GPA");
-             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-            //JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống MSSV");
-            JOptionPane optionPane = new JOptionPane("Vui Lòng Không Bỏ Trống GPA!",
-                                                JOptionPane.INFORMATION_MESSAGE,
-                                                JOptionPane.DEFAULT_OPTION);
-
-        // Tạo JDialog từ JOptionPane
-        JDialog dialog = optionPane.createDialog(null, "Notification");
-        dialog.setSize(390, 200); // Thiết lập kích thước cho JDialog
-        dialog.setVisible(true);
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống GPA");
+          
         }
 
         else{
@@ -679,12 +723,14 @@ public class View extends JFrame implements Comparable<Student>{
             else{
                 s.setGender(nu.getText());
             }
-            s.setAddress((String) tadd.getSelectedItem());
+            
+            s.setAddress(new Address(xa.getText(), huyen.getText(), tinh.getText()));
             s.setEmail(temail.getText());
             s.setPhone(tphone.getText());
             s.setGpa(Double.parseDouble(tgpa.getText()));
             list.add(s);
             ShowResult();
+            System.out.println(s.toString());
             //WriteFile(f);
             Font i = new Font("Arial",Font.ITALIC,20);
             Color g = Color.gray;
@@ -698,7 +744,17 @@ public class View extends JFrame implements Comparable<Student>{
             if(nam.isSelected() || nu.isSelected()){
                 gr.clearSelection();
             }
-            tadd.setSelectedIndex(0);
+            xa.setText("Xã");
+            xa.setForeground(g);
+            xa.setFont(new Font("Arial",Font.ITALIC,18));
+            huyen.setText("Huyện");
+            huyen.setForeground(g);
+
+            huyen.setFont(new Font("Arial",Font.ITALIC,18)); 
+            tinh.setText("Tỉnh");
+            tinh.setForeground(g);
+
+            tinh.setFont(new Font("Arial",Font.ITALIC,18));
             temail.setText("Jessica69@gmail.com");
             temail.setFont(i);
             temail.setForeground(g);
@@ -728,7 +784,7 @@ public class View extends JFrame implements Comparable<Student>{
             s[i][1] = n.getName();
             s[i][2] = n.getAge();
             s[i][3] = n.getGender();
-            s[i][4] = n.getAddress();
+            s[i][4] = n.getAddress().getXa()+" - "+n.getAddress().getHuyen()+" - "+n.getAddress().getTinh();
             s[i][5] = n.getPhone();
             s[i][6] = n.getEmail();
             s[i][7] = n.getGpa();
@@ -767,30 +823,15 @@ public class View extends JFrame implements Comparable<Student>{
      *
      * @return
      */
-    public Student getDelStudent() {
-        int i_row = table.getSelectedRow();
-        DefaultTableModel tm = (DefaultTableModel) table.getModel();
-        String id = (String) tm.getValueAt(i_row, 0);
-        String name = (String) tm.getValueAt(i_row, 1);
-        int age = Integer.valueOf(tm.getValueAt(i_row, 2) + "");
-        String gender = (String) tm.getValueAt(i_row ,3 );
-        String add = (String) tm.getValueAt(i_row, 4);
-        String email = (String) tm.getValueAt(i_row, 5);
-        String phone = (String) tm.getValueAt(i_row, 6);
-        double gpa = Double.valueOf(tm.getValueAt(i_row, 7) + "");
-        Student s = new Student(id, name, age, gender, add, email, phone, gpa);
-        return s;
-
-    }
+    
     public void XoaStudent() throws FileNotFoundException {
         UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
 
         DefaultTableModel md = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
         if(i_row != -1){
-              int lc = JOptionPane.showConfirmDialog(this, "Bạn Có Muốn Xoá Sinh Viên Này? ");
+              var lc = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Xoá Sinh Viên Này? ","Xoá Sinh Viên",JOptionPane.YES_NO_OPTION);
             if (lc == JOptionPane.YES_OPTION) {
-            Student s = getDelStudent();
             md.removeRow(i_row);
             list.remove(i_row);
             WriteFile(file);
@@ -818,7 +859,7 @@ public class View extends JFrame implements Comparable<Student>{
             s[i][1] = n.getName();
             s[i][2] = n.getAge();
             s[i][3] = n.getGender();
-            s[i][4] = n.getAddress();
+            s[i][4] = n.getAddress().getXa()+" - "+n.getAddress().getHuyen()+" - "+n.getAddress().getTinh();
             s[i][5] = n.getPhone();
             s[i][6] = n.getEmail();
             s[i][7] = n.getGpa();
@@ -831,31 +872,32 @@ public class View extends JFrame implements Comparable<Student>{
         WriteFile(file);
     }
 
+    public File getFile() {
+        return file;
+    }
 
-    public void ReadFile() {
-        UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
-       
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+
+    public void ReadFile(File file) {       
          try {
-            String nf = JOptionPane.showInputDialog(null  , "Nhập Tên File Danh Sách Sinh Viên");
-            file = new File(nf);
+            setFile(file);
             FileInputStream fis = new FileInputStream(file);
-            Scanner ip = new Scanner(fis);
+            ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Student> listStudent = new ArrayList<Student>();
-            while (ip.hasNext()) {
-                Student s = new Student();
-                s.setId(ip.nextLine());
-                s.setName(ip.nextLine());
-                s.setAge(Integer.parseInt(ip.nextLine()));
-                s.setGender(ip.nextLine());
-                s.setAddress(ip.nextLine());
-                s.setEmail(ip.nextLine());
-                s.setPhone(ip.nextLine());
-                s.setGpa(Double.parseDouble(ip.nextLine()));
+
+            while (fis.available() > 0) {
+                Student s = (Student) ois.readObject();
                 listStudent.add(s);
+                
             }
+                                     System.out.println(file);
             setList(listStudent);
+            System.out.println("Doc File Thanh Cong");
             ShowResult();
-            ip.close();
+            ois.close();
             fis.close();
         } catch (Exception e) {
         }
@@ -877,20 +919,12 @@ public class View extends JFrame implements Comparable<Student>{
     public void WriteFile(File file) throws FileNotFoundException {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            PrintWriter pw = new PrintWriter(fos);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
             for (Student s : list) {
-                pw.println(s.getId());
-                pw.println(s.getName());
-                pw.println(s.getAge());
-                pw.println(s.getGender());
-                pw.println(s.getAddress());
-                pw.println(s.getEmail());
-                pw.println(s.getPhone());
-                pw.println(s.getGpa());
-
+               oos.writeObject(s);
             }
             System.out.println("Da ghi du lieu ra file");
-            pw.close();
+            oos.close();
             fos.close();
         } catch (Exception e) {
         }
@@ -904,7 +938,7 @@ public class View extends JFrame implements Comparable<Student>{
             Student s = list.get(i);
             if(s.getName().toLowerCase().contains(n)){
 
-            md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress(),s.getPhone(),s.getEmail(),s.getGpa()});
+            md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
             }
       
         }
@@ -914,7 +948,9 @@ public class View extends JFrame implements Comparable<Student>{
         }
 
     public void Refresh() {
-        tsearch.setText("");
+        tsearch.setText("Nhập Họ Tên Sinh Viên");
+        tsearch.setForeground(Color.GRAY);
+        tsearch.setFont(new Font("Arial",Font.ITALIC,20));
         ShowResult();
     }
     
@@ -922,10 +958,10 @@ public class View extends JFrame implements Comparable<Student>{
         JFrame luu = new JFrame("Cập Nhật Thông Tin Sinh Viên");
         luu.setSize(800 , 500);
         luu.setLocationRelativeTo(null);
-        
+        luu.setTitle("SỬA THÔNG TIN SINH VIÊN");
         Font f = new Font("Arial", Font.BOLD, 20);
 
-        name = new JLabel("Họ Tên");
+        name = new JLabel("Họ Tên Sinh Vien");
         name.setHorizontalAlignment(SwingConstants.CENTER);
         name.setFont(f);
         age = new JLabel("Tuổi");
@@ -937,7 +973,7 @@ public class View extends JFrame implements Comparable<Student>{
         email = new JLabel("Email");
         email.setHorizontalAlignment(SwingConstants.CENTER);
         email.setFont(f);
-        phone = new JLabel("Số ĐT");
+        phone = new JLabel("Số Điện Thoại");
         phone.setHorizontalAlignment(SwingConstants.CENTER);
         phone.setFont(f);
         gpa = new JLabel("GPA");
@@ -947,9 +983,30 @@ public class View extends JFrame implements Comparable<Student>{
         gender.setHorizontalAlignment(SwingConstants.CENTER);
         gender.setFont(f);
         
-        tname = new JTextField();
-        tname.setFont(f);
-        tname.setBorder(new LineBorder(Color.BLACK));
+        Font italic = new Font("Arial",Font.ITALIC,20);
+        tname = new JTextField("Nhập Họ Tên Sinh Viên");
+        tname.setFont(italic);
+        tname.setForeground(Color.GRAY);
+        //tname.setHorizontalAlignment(SwingConstants.CENTER);
+        tname.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                tname.setText("");
+                tname.setFont(new Font("Arial",Font.PLAIN,20));
+                tname.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (tname.getText().isEmpty()) {
+                    tname.setText("Nhập Họ Tên Sinh Viên");
+                    tname.setForeground(Color.GRAY);
+                    tname.setFont(new Font("Arial",Font.ITALIC,20));
+                }
+            }
+        });
          Integer[] ages = new Integer[101];
         for (int i = 1; i <= 100; i++) {
             ages[i] = i;
@@ -957,32 +1014,150 @@ public class View extends JFrame implements Comparable<Student>{
         tage = new JComboBox<>(ages);
         tage.setFont(f);
 
-        Object o[] = {"",
-            "An Giang", "Bà Rịa – Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh",
-            "Bến Tre", "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", 
-            "Cần Thơ", "Cao Bằng", "Đà Nẵng", "Đắk Lắk", "Đắk Nông", "Điện Biên", "Đồng Nai", 
-            "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam", "Hà Nội", "Hà Tĩnh", "Hải Dương", 
-            "Hải Phòng", "Hậu Giang", "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum", 
-            "Lai Châu", "Lâm Đồng", "Lạng Sơn", "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", 
-            "Ninh Thuận", "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", 
-            "Quảng Trị", "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình", "Thái Nguyên", "Thanh Hóa", 
-            "Thừa Thiên Huế", "Tiền Giang", "TP Hồ Chí Minh", "Trà Vinh", "Tuyên Quang", "Vĩnh Long", 
-            "Vĩnh Phúc", "Yên Bái"
-        };
-        tadd = new JComboBox(o);
-        tadd.setFont(f);
+        Border bd = new EmptyBorder(0, 0, 0, 0);
+        Font f18 = new Font("Arial",Font.ITALIC,18);
+        xa = new JTextField("Xã");
+         xa.setFont(f18);
+         xa.setForeground(Color.GRAY);
+         xa.setBorder(new EmptyBorder(0, 0, 0, 0));
+         xa.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                xa.setText("");
+                xa.setFont(new Font("Arial",Font.PLAIN,18));
+                xa.setForeground(Color.BLACK);
+            }
 
-        temail = new JTextField();
-        temail.setFont(f);
-        temail.setBorder(new LineBorder(Color.BLACK));
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (xa.getText().isEmpty()) {
+                    xa.setText("Xã");
+                    xa.setForeground(Color.GRAY);
+                    xa.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+         huyen = new JTextField("Huyện");
+         huyen.setFont(f18);
+         huyen.setForeground(Color.GRAY);
+         huyen.setBorder(new EmptyBorder(0, 0, 0, 0));
+         huyen.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                huyen.setText("");
+                huyen.setFont(new Font("Arial",Font.PLAIN,18));
+                huyen.setForeground(Color.BLACK);
+            }
 
-        tphone = new JTextField();
-        tphone.setFont(f);
-        tphone.setBorder(new LineBorder(Color.BLACK));
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (huyen.getText().isEmpty()) {
+                    huyen.setText("Huyện");
+                    huyen.setForeground(Color.GRAY);
+                    huyen.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+         tinh = new JTextField("Tỉnh");
+         tinh.setFont(f18);
+         tinh.setForeground(Color.GRAY);
+         tinh.setBorder(new EmptyBorder(0, 0, 0, 0));
+         tinh.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                tinh.setText("");
+                tinh.setFont(new Font("Arial",Font.PLAIN,18));
+                tinh.setForeground(Color.BLACK);
+            }
 
-        tgpa = new JTextField();
-        tgpa.setFont(f);
-        tgpa.setBorder(new LineBorder(Color.BLACK));
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (tinh.getText().isEmpty()) {
+                    tinh.setText("Tỉnh");
+                    tinh.setForeground(Color.GRAY);
+                    tinh.setFont(new Font("Arial",Font.ITALIC,18));
+                }
+            }
+        });
+        
+        temail = new JTextField("Jessica69@gmail.com");
+        temail.setFont(italic);
+        //temail.setBorder(bottomBorder);
+        //temail.setHorizontalAlignment(SwingConstants.CENTER);
+        temail.setForeground(Color.gray);
+        temail.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                temail.setText("");
+                temail.setFont(new Font("Arial",Font.PLAIN,20));
+                temail.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (temail.getText().isEmpty()) {
+                    temail.setText("Jessica69@gmail.com");
+                    temail.setForeground(Color.GRAY);
+                    temail.setFont(new Font("Arial",Font.ITALIC,20));
+                }
+            }
+        });
+        tphone = new JTextField("0123456789");
+        tphone.setFont(italic);
+        //tphone.setHorizontalAlignment(SwingConstants.CENTER);
+        tphone.setForeground(Color.GRAY);
+        //tphone.setBorder(bottomBorder);
+        tphone.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                tphone.setText("");
+                tphone.setFont(new Font("Arial",Font.PLAIN,20));
+                tphone.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (tphone.getText().isEmpty()) {
+                    tphone.setText("0123456789");
+                    tphone.setForeground(Color.GRAY);
+                    tphone.setFont(new Font("Arial",Font.ITALIC,20));
+                }
+            }
+        });
+        tgpa = new JTextField("Nhập GPA");
+        tgpa.setFont(italic);
+        //tgpa.setHorizontalAlignment(SwingConstants.CENTER);
+
+        tgpa.setForeground(Color.gray);
+        tgpa.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Xử lý khi nhận focus
+                tgpa.setText("");
+                tgpa.setFont(new Font("Arial",Font.PLAIN,20));
+                tgpa.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Xử lý khi mất focus
+                if (tgpa.getText().isEmpty()) {
+                    tgpa.setText("Nhập GPA");
+                    tgpa.setForeground(Color.GRAY);
+                    tgpa.setFont(new Font("Arial",Font.ITALIC,20));
+                }
+            }
+        });
 
         nam = new JRadioButton("Nam");
         nam.setFont(f);
@@ -1024,10 +1199,14 @@ public class View extends JFrame implements Comparable<Student>{
         s7.add(phone,BorderLayout.WEST);
         s8.add(gpa,BorderLayout.WEST);
         
+        JPanel p_add = new JPanel(new GridLayout(1, 3, 0, 0));
+        p_add.add(xa);
+        p_add.add(huyen);
+        p_add.add(tinh);
         s2.add(tname,BorderLayout.CENTER);
         s3.add(tage,BorderLayout.CENTER);
         s4.add(p4,BorderLayout.CENTER);
-        s5.add(tadd,BorderLayout.CENTER);
+        s5.add(p_add,BorderLayout.CENTER);
         s6.add(temail,BorderLayout.CENTER);
         s7.add(tphone,BorderLayout.CENTER);
         s8.add(tgpa,BorderLayout.CENTER);
@@ -1035,10 +1214,10 @@ public class View extends JFrame implements Comparable<Student>{
         JButton save = new JButton("Lưu");
         JButton huy = new JButton("Huỷ");
         save.setFont(f);
-        save.setBackground(Color.GRAY);
+        save.setBackground(Color.DARK_GRAY);
         save.setForeground(Color.WHITE);
         huy.setFont(f);
-        huy.setBackground(Color.GRAY);
+        huy.setBackground(Color.DARK_GRAY);
         huy.setForeground(Color.WHITE);
         huy.addActionListener(new ActionListener() {
             @Override
@@ -1047,7 +1226,6 @@ public class View extends JFrame implements Comparable<Student>{
             }
         });
         
-        int i_row = table.getSelectedRow();
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1079,35 +1257,60 @@ public class View extends JFrame implements Comparable<Student>{
         
         DefaultTableModel tm = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-         if(tname.getText().equals("")){
+        if(tname.getText().equals("Nhập Họ Tên Sinh Viên")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Họ Tên");
         }
         else if(tage.getSelectedIndex() == -1){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Tuổi");
+            
         } 
         else if(!nam.isSelected() && !nu.isSelected()){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Giới Tính"); 
+        
         }
-        else if(tadd.getSelectedItem().equals("")){
+        else if(xa.getText().equals("Xã")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+        
         }
-        else if(temail.getText().equals("")){
+        else if(huyen.getText().equals("Huyện")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+           
+        }
+        else if(tinh.getText().equals("Tỉnh")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
+            JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Địa Chỉ");
+            
+        }
+        else if(temail.getText().equals("Jessica69@gmail.com")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
+           
         }
-        else if(tphone.getText().equals("")){
+        else if(tphone.getText().equals("0123456789")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
+      
         }
-        else if(tgpa.getText().equals("")){
+        else if(tgpa.getText().equals("Nhập GPA")){
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống GPA");
+          
         }
 
         else{
+            
             try {
                 double g = Double.parseDouble(tgpa.getText());
             } catch (Exception e) {
                 System.out.println(e.toString());
             JOptionPane.showMessageDialog(null, "Vui Lòng Nhập Lại GPA, GPA Phải Là Số");
             return;
+            }
             }
             Student s = list.get(i_row);
             s.setName(tname.getText());
@@ -1118,16 +1321,52 @@ public class View extends JFrame implements Comparable<Student>{
             else{
                 s.setGender(nu.getText());
             }
-            s.setAddress((String) tadd.getSelectedItem());
+            
+            s.setAddress(new Address(xa.getText(), huyen.getText(), tinh.getText()));
             s.setEmail(temail.getText());
             s.setPhone(tphone.getText());
             s.setGpa(Double.parseDouble(tgpa.getText()));
             ShowResult();
+            System.out.println(s.toString());
+            //WriteFile(f);
+            Font i = new Font("Arial",Font.ITALIC,20);
+            Color g = Color.gray;
+            tid.setText("Nhập Mã Số Sinh Viên");
+            tid.setFont(i);
+            tid.setForeground(g);
+            tname.setText("Nhập Họ Tên");
+            tname.setFont(i);
+            tname.setForeground(g);
+            tage.setSelectedIndex(0);
+            if(nam.isSelected() || nu.isSelected()){
+                gr.clearSelection();
+            }
+            xa.setText("Xã");
+            xa.setForeground(g);
+            xa.setFont(new Font("Arial",Font.ITALIC,18));
+            huyen.setText("Huyện");
+            huyen.setForeground(g);
+
+            huyen.setFont(new Font("Arial",Font.ITALIC,18)); 
+            tinh.setText("Tỉnh");
+            tinh.setForeground(g);
+
+            tinh.setFont(new Font("Arial",Font.ITALIC,18));
+            temail.setText("Jessica69@gmail.com");
+            temail.setFont(i);
+            temail.setForeground(g);
+            tphone.setText("0123456789");
+            tphone.setFont(i);
+            tphone.setForeground(g);
+            tgpa.setText("Nhập GPA");
+            tgpa.setFont(i);
+            tgpa.setForeground(g);
             WriteFile(file);
+            UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Lưu Thành công");
             
     }
 }
     
    
-}
+
