@@ -23,10 +23,10 @@ public class ControllerLogin implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        if(s.equals("Login")){
+        if(s.equals("Đăng nhập")){
             login.DangNhap();
         }
-        else if(s.equals("Exit")){
+        else if(s.equals("Thoát")){
             login.Thoat();
         }
     }

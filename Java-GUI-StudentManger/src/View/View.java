@@ -4,6 +4,7 @@
  */
 package View;
 
+import java.awt.*;
 import Controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -132,10 +133,10 @@ public class View extends JFrame implements Comparable<Student>{
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         list = new ArrayList<Student>();
-        ImageIcon iadd = new ImageIcon("C:\\Users\\PC\\OneDrive\\Desktop\\Swing_Java\\Java-GUI-StudentManger\\test\\add.png");
-        ImageIcon idel = new ImageIcon("C:\\Users\\PC\\OneDrive\\Desktop\\Swing_Java\\Java-GUI-StudentManger\\test\\del.png");
-        ImageIcon iupdate = new ImageIcon("C:\\Users\\PC\\OneDrive\\Desktop\\Swing_Java\\Java-GUI-StudentManger\\test\\update.png");
-        ImageIcon isearch = new ImageIcon("C:\\Users\\PC\\OneDrive\\Desktop\\Swing_Java\\Java-GUI-StudentManger\\test\\search.png");
+        ImageIcon iadd = new ImageIcon("test\\add.png");
+        ImageIcon idel = new ImageIcon("test\\del.png");
+        ImageIcon iupdate = new ImageIcon("test\\update.png");
+        ImageIcon isearch = new ImageIcon("test\\search.png");
         int width = 40; // Chiều rộng mới
         int height = 40; // Chiều cao mới
         Image sadd = iadd.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -156,7 +157,7 @@ public class View extends JFrame implements Comparable<Student>{
         id.setHorizontalAlignment(SwingConstants.LEFT);
         id.setFont(new Font("Arial",Font.BOLD,20) {
         });
-        name = new JLabel("Họ Tên");
+        name = new JLabel("Họ Và Tên");
         name.setHorizontalAlignment(SwingConstants.LEFT);
         name.setFont(plain);
         age = new JLabel("Tuổi");
@@ -166,10 +167,10 @@ public class View extends JFrame implements Comparable<Student>{
         address.setHorizontalAlignment(SwingConstants.LEFT);
         address.setPreferredSize(new Dimension(100,50));
         address.setFont(plain);
-        email = new JLabel("Email");
+        email = new JLabel("Địa Chỉ Email");
         email.setHorizontalAlignment(SwingConstants.LEFT);
         email.setFont(plain);
-        phone = new JLabel("Số ĐT");
+        phone = new JLabel("Số Điện Thoại");
         phone.setHorizontalAlignment(SwingConstants.LEFT);
         phone.setFont(plain);
         gpa = new JLabel("GPA");
@@ -183,7 +184,7 @@ public class View extends JFrame implements Comparable<Student>{
         tid = new JTextField("Nhập Mã Số Sinh Viên");
         //tid.setHorizontalAlignment(SwingConstants.CENTER);
         tid.setFont(italic);
-        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
+        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK);
         tid.setBorder(bottomBorder);
         tid.setForeground(Color.GRAY);
         tid.addFocusListener(new FocusListener() {
@@ -278,7 +279,7 @@ public class View extends JFrame implements Comparable<Student>{
                 }
             }
         });
-        tphone = new JTextField("0123456789");
+        tphone = new JTextField("0123456789 ");
         tphone.setFont(italic);
         //tphone.setHorizontalAlignment(SwingConstants.CENTER);
         tphone.setForeground(Color.GRAY);
@@ -296,7 +297,7 @@ public class View extends JFrame implements Comparable<Student>{
             public void focusLost(FocusEvent e) {
                 // Xử lý khi mất focus
                 if (tphone.getText().isEmpty()) {
-                    tphone.setText("0123456789");
+                    tphone.setText("0123456789 ");
                     tphone.setForeground(Color.GRAY);
                     tphone.setFont(new Font("Arial",Font.ITALIC,20));
                 }
@@ -428,20 +429,26 @@ public class View extends JFrame implements Comparable<Student>{
 
         model = new DefaultTableModel(data, cname);
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize(new Dimension(1140, 570));
+        table.setPreferredScrollableViewportSize(new Dimension(1120, 545));
         table.setBackground(Color.LIGHT_GRAY);
         table.getColumnModel().getColumn(0).setPreferredWidth(120);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(190);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
-        table.getColumnModel().getColumn(5).setPreferredWidth(170);
-        table.getColumnModel().getColumn(6).setPreferredWidth(170);
+        table.getColumnModel().getColumn(4).setPreferredWidth(220);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        table.getColumnModel().getColumn(6).setPreferredWidth(160);
         table.getColumnModel().getColumn(7).setPreferredWidth(80);
         jsp = new JScrollPane(table);
+        
         JPanel p_table = new JPanel();
-        p_table.add(jsp);
-        p_table.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+        JPanel tb = new JPanel();
+        tb.add(jsp);
+        p_table.setBorder(new EmptyBorder(0, 0, 0, 20));
+        p_table.add(tb);
+        //p_table.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+        
+        tb.setBorder(new LineBorder(Color.BLACK, 2));
 
         
         gr = new ButtonGroup();
@@ -513,7 +520,7 @@ public class View extends JFrame implements Comparable<Student>{
         btn.add(sortbtgpa);
         btn.add(readfile);
         btn.add(exit);
-        btn.setBorder(new EmptyBorder(10, 30, 10, 30));
+        btn.setBorder(new EmptyBorder(30, 20, 10, 20));
        
         
         tsearch = new JTextField("Nhập Họ Tên Sinh Viên");
@@ -546,12 +553,26 @@ public class View extends JFrame implements Comparable<Student>{
         
         //search.setHorizontalAlignment(SwingConstants.RIGHT);
         JPanel p_search = new JPanel(new BorderLayout(10, 10));
+        
         JPanel bt_se_re = new JPanel(new GridLayout(1, 2, 10, 10));
-        p_search.add(tsearch,BorderLayout.CENTER);
+        JPanel ts = new JPanel(new GridLayout(1, 3));
+        JLabel te = new JLabel("");
+        JLabel te1 = new JLabel("NHẬP THÔNG TIN");
+        te1.setFont(new Font("Arial",Font.BOLD,20));
+        te1.setHorizontalAlignment(SwingConstants.CENTER);
+        te1.setBorder(new EmptyBorder(0, 0, 0, 50));
+        te1.setForeground(Color.decode("#F50057"));
+        ts.add(te1);
+        ts.add(te);
+        ts.add(tsearch);
+        p_search.add(ts,BorderLayout.CENTER);
+        //p_search.add(tsearch,BorderLayout.CENTER);
         bt_se_re.add(search);
         bt_se_re.add(refresh);
         p_search.add(bt_se_re,BorderLayout.EAST);
-        p_search.setBorder(new EmptyBorder(10, 800, 0, 20));
+        tsearch.setPreferredSize(new Dimension(500,40));
+        bt_se_re.setBorder(new EmptyBorder(0, 0, 0, 20));
+        p_search.setBorder(new EmptyBorder(20, 0, 0, 20));
         
         JPanel p_center = new JPanel(new BorderLayout(20, 20));
         JLabel head = new JLabel("QUẢN LÝ SINH VIÊN");
@@ -579,6 +600,15 @@ public class View extends JFrame implements Comparable<Student>{
         s6.setBackground(Color.WHITE);
         s7.setBackground(Color.WHITE);
         s8.setBackground(Color.WHITE);
+
+        s1.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s2.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s3.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s4.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s5.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s6.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s7.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
+        s8.setBorder(new LineBorder(Color.decode("#e74c3c"), WIDTH));
 
         //Border b = new EmptyBorder(0, 30, 0, 30);
         Dimension d = new Dimension(350, 40);
@@ -622,6 +652,7 @@ public class View extends JFrame implements Comparable<Student>{
         
         head.setBorder(new EmptyBorder(20, 0, 0, 0));
         this.add(head,BorderLayout.NORTH);
+        
         p_center.add(p_search,BorderLayout.NORTH);
         p_center.add(p_table,BorderLayout.CENTER);
         //p_center.add(dl,BorderLayout.WEST);
@@ -654,12 +685,12 @@ public class View extends JFrame implements Comparable<Student>{
         };
         table.setModel(new DefaultTableModel(s, cname));
         table.getColumnModel().getColumn(0).setPreferredWidth(120);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(190);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
-        table.getColumnModel().getColumn(5).setPreferredWidth(170);
-        table.getColumnModel().getColumn(6).setPreferredWidth(170);
+        table.getColumnModel().getColumn(4).setPreferredWidth(220);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        table.getColumnModel().getColumn(6).setPreferredWidth(160);
         table.getColumnModel().getColumn(7).setPreferredWidth(80);
     }
     
@@ -707,7 +738,7 @@ public class View extends JFrame implements Comparable<Student>{
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Email");
            
         }
-        else if(tphone.getText().equals("0123456789")){
+        else if(tphone.getText().equals("0123456789 ")){
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             JOptionPane.showMessageDialog(null, "Vui Lòng Không Bỏ Trống Số Điện Thoại");
       
@@ -982,7 +1013,7 @@ public class View extends JFrame implements Comparable<Student>{
         luu.setTitle("SỬA THÔNG TIN SINH VIÊN");
         Font f = new Font("Arial", Font.BOLD, 20);
 
-        name = new JLabel("Họ Tên Sinh Vien");
+        name = new JLabel("Họ Tên Sinh Viên");
         name.setHorizontalAlignment(SwingConstants.CENTER);
         name.setFont(f);
         age = new JLabel("Tuổi");
@@ -991,7 +1022,7 @@ public class View extends JFrame implements Comparable<Student>{
         address = new JLabel("Địa Chỉ");
         address.setHorizontalAlignment(SwingConstants.CENTER);
         address.setFont(f);
-        email = new JLabel("Email");
+        email = new JLabel("Địa Chỉ Email");
         email.setHorizontalAlignment(SwingConstants.CENTER);
         email.setFont(f);
         phone = new JLabel("Số Điện Thoại");
@@ -1008,6 +1039,7 @@ public class View extends JFrame implements Comparable<Student>{
         tname = new JTextField("Nhập Họ Tên Sinh Viên");
         tname.setFont(italic);
         tname.setForeground(Color.GRAY);
+        tname.setBorder(new LineBorder(Color.red, WIDTH));
         //tname.setHorizontalAlignment(SwingConstants.CENTER);
         tname.addFocusListener(new FocusListener() {
             @Override
@@ -1034,7 +1066,9 @@ public class View extends JFrame implements Comparable<Student>{
         }
         tage = new JComboBox<>(ages);
         tage.setFont(f);
-
+        tage.setBorder(new EmptyBorder(0, 0, 0, 0));
+        tage.setEditable(true);
+       
         Border bd = new EmptyBorder(0, 0, 0, 0);
         Font f18 = new Font("Arial",Font.ITALIC,18);
         xa = new JTextField("Xã");
@@ -1110,7 +1144,7 @@ public class View extends JFrame implements Comparable<Student>{
          //tạo textfield nhập email
         temail = new JTextField("Jessica69@gmail.com");
         temail.setFont(italic);
-        //temail.setBorder(bottomBorder);
+        temail.setBorder(new LineBorder(Color.red, WIDTH));
         //temail.setHorizontalAlignment(SwingConstants.CENTER);
         temail.setForeground(Color.gray);
         temail.addFocusListener(new FocusListener() {
@@ -1137,7 +1171,7 @@ public class View extends JFrame implements Comparable<Student>{
         tphone.setFont(italic);
         //tphone.setHorizontalAlignment(SwingConstants.CENTER);
         tphone.setForeground(Color.GRAY);
-        //tphone.setBorder(bottomBorder);
+        tphone.setBorder(new LineBorder(Color.red, WIDTH));
         tphone.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -1160,7 +1194,7 @@ public class View extends JFrame implements Comparable<Student>{
         // tạo textfield nhập điểm gpa
         tgpa = new JTextField("Nhập GPA");
         tgpa.setFont(italic);
-        //tgpa.setHorizontalAlignment(SwingConstants.CENTER);
+        tgpa.setBorder(new LineBorder(Color.red, WIDTH));
         tgpa.setForeground(Color.gray);
         tgpa.addFocusListener(new FocusListener() {
             @Override
@@ -1203,10 +1237,11 @@ public class View extends JFrame implements Comparable<Student>{
         
         
         JPanel p4 = new JPanel(new FlowLayout(SwingConstants.CENTER));
-        p4.add(nam);
+        p4.setBorder(new LineBorder(Color.red, WIDTH));
+        p4.add(nam,SwingConstants.CENTER);
         p4.add(nu);
         Dimension t = new Dimension(300, 40);
-        //name.setBorder(b);
+        
         name.setPreferredSize(t);
         age.setPreferredSize(t);
         gender.setPreferredSize(t);
@@ -1225,6 +1260,7 @@ public class View extends JFrame implements Comparable<Student>{
         
         // panel chứa textfield địa chỉ
         JPanel p_add = new JPanel(new GridLayout(1, 3, 0, 0));
+        p_add.setBorder(new LineBorder(Color.red, WIDTH));
         p_add.add(xa);
         p_add.add(huyen);
         p_add.add(tinh);
