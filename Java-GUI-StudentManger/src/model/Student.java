@@ -103,9 +103,18 @@ public class Student implements Serializable{
         String[] word = this.name.split(" ");
         return word[word.length-1];
     }
+       
+    public String getLastName(){
+        String[] word = this.name.split(" ");
+        return word[0];
+    }
     @Override
     public String toString() {
         return "Student{" + "id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", address=" + address.toString() + ", email=" + email + ", phone=" + phone + ", gpa=" + gpa + '}';
+    }
+
+    public Object removeDiacritics(String fisrtName) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     

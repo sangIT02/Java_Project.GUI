@@ -76,7 +76,7 @@ public class Controller implements ActionListener{
             // Kiểm tra xem người dùng có chọn file hay không
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                System.out.println("Selected file: " + selectedFile.getName());
                 // Thực hiện các xử lý cần thiết với file đã chọn
                 view.ReadFile(selectedFile);
             }
@@ -87,7 +87,8 @@ public class Controller implements ActionListener{
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             var n = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát", "Thoát", JOptionPane.OK_OPTION);
             if(n == JOptionPane.YES_OPTION)
-            System.exit(0);
+            System.gc();
+            view.dispose();
        }
        if(s.equals("Tìm Kiếm")){
            view.Search();

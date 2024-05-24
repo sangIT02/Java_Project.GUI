@@ -159,7 +159,8 @@ public class Login extends JFrame{
     }
 
     void Thoat() {
-        System.exit(0);
+        System.gc();
+        dispose();
     }
     
     
