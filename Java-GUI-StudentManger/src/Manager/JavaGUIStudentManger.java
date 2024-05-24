@@ -6,6 +6,7 @@ package Manager;
 
 import Login.Login;
 import View.View;
+import java.util.Scanner;
 import javax.swing.UIManager;
 
 /**
@@ -21,11 +22,13 @@ public class JavaGUIStudentManger {
         // TODO code application logic here
         //new Login();
         try {
-            //new Login();
-            new View();
+            new Login();
+            //new View();
             //new Login();
         } catch (Exception e) {
+           
         }
+        
     }
     
 }

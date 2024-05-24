@@ -823,7 +823,7 @@ public class View extends JFrame implements Comparable<Student>{
         Collections.sort(list, new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
-                return o1.getName().compareTo(o2.getName());
+                return o1.getFisrtName().compareTo(o2.getFisrtName());
             }
 
         });
@@ -1034,7 +1034,6 @@ public class View extends JFrame implements Comparable<Student>{
         gender = new JLabel("Giới Tính");
         gender.setHorizontalAlignment(SwingConstants.CENTER);
         gender.setFont(f);
-        
         Font italic = new Font("Arial",Font.ITALIC,20);
         tname = new JTextField("Nhập Họ Tên Sinh Viên");
         tname.setFont(italic);
@@ -1068,7 +1067,8 @@ public class View extends JFrame implements Comparable<Student>{
         tage.setFont(f);
         tage.setBorder(new EmptyBorder(0, 0, 0, 0));
         tage.setEditable(true);
-       
+        tage.setBorder(new LineBorder(Color.red, WIDTH));
+
         Border bd = new EmptyBorder(0, 0, 0, 0);
         Font f18 = new Font("Arial",Font.ITALIC,18);
         xa = new JTextField("Xã");
@@ -1240,6 +1240,11 @@ public class View extends JFrame implements Comparable<Student>{
         p4.setBorder(new LineBorder(Color.red, WIDTH));
         p4.add(nam,SwingConstants.CENTER);
         p4.add(nu);
+        nam.setBackground(Color.white);
+        nu.setBackground(Color.white);
+
+        p4.setBackground(Color.white);
+
         Dimension t = new Dimension(300, 40);
         
         name.setPreferredSize(t);
@@ -1264,7 +1269,7 @@ public class View extends JFrame implements Comparable<Student>{
         p_add.add(xa);
         p_add.add(huyen);
         p_add.add(tinh);
-        
+
         s2.add(tname,BorderLayout.CENTER);
         s3.add(tage,BorderLayout.CENTER);
         s4.add(p4,BorderLayout.CENTER);

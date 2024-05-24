@@ -98,7 +98,11 @@ public class Student implements Serializable{
     public void setGpa(double gpa) {
         this.gpa = gpa;
     }
-
+    
+    public String getFisrtName(){
+        String[] word = this.name.split(" ");
+        return word[word.length-1];
+    }
     @Override
     public String toString() {
         return "Student{" + "id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", address=" + address.toString() + ", email=" + email + ", phone=" + phone + ", gpa=" + gpa + '}';
