@@ -988,7 +988,7 @@ public class View extends JFrame implements Comparable<Student>{
         String n = tsearch.getText().toLowerCase();
         for(int i = 0;i < list.size();i++){
             Student s = list.get(i);
-            if(s.getName().toLowerCase().contains(n)){
+            if(s.getFisrtName().toLowerCase().contains(n)){
 
             md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
             }
