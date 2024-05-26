@@ -438,9 +438,9 @@ public class View extends JFrame implements Comparable<Student>{
         table.getColumnModel().getColumn(1).setPreferredWidth(190);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(220);
-        table.getColumnModel().getColumn(5).setPreferredWidth(150);
-        table.getColumnModel().getColumn(6).setPreferredWidth(160);
+        table.getColumnModel().getColumn(4).setPreferredWidth(230);
+        table.getColumnModel().getColumn(5).setPreferredWidth(130);
+        table.getColumnModel().getColumn(6).setPreferredWidth(170);
         table.getColumnModel().getColumn(7).setPreferredWidth(80);
         jsp = new JScrollPane(table);
         
@@ -495,6 +495,8 @@ public class View extends JFrame implements Comparable<Student>{
         sortbyname.setBorder(bl);
         sortbyname.addActionListener(ac);
 
+      
+        
         exit = new JButton("Thoát");
         exit.setBackground(Color.DARK_GRAY);
         exit.setForeground(Color.white);        
@@ -691,9 +693,9 @@ public class View extends JFrame implements Comparable<Student>{
         table.getColumnModel().getColumn(1).setPreferredWidth(190);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(220);
-        table.getColumnModel().getColumn(5).setPreferredWidth(150);
-        table.getColumnModel().getColumn(6).setPreferredWidth(160);
+        table.getColumnModel().getColumn(4).setPreferredWidth(230);
+        table.getColumnModel().getColumn(5).setPreferredWidth(130);
+        table.getColumnModel().getColumn(6).setPreferredWidth(170);
         table.getColumnModel().getColumn(7).setPreferredWidth(80);
     }
     
