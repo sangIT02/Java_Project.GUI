@@ -526,7 +526,7 @@ public class View extends JFrame implements Comparable<Student>{
         btn.setBorder(new EmptyBorder(30, 20, 10, 20));
        
         
-        tsearch = new JTextField("Nhập Họ Tên Sinh Viên");
+        tsearch = new JTextField("Nhập Tên Sinh Viên");
         tsearch.setForeground(Color.GRAY);
         tsearch.setFont(italic);
         tsearch.setPreferredSize(new Dimension(150, 20));
@@ -541,7 +541,7 @@ public class View extends JFrame implements Comparable<Student>{
             @Override
             public void focusLost(FocusEvent e) {
                     if (tsearch.getText().isEmpty()) {
-                    tsearch.setText("Nhập Họ Tên Sinh Viên");
+                    tsearch.setText("Nhập Tên Sinh Viên");
                     tsearch.setForeground(Color.GRAY);
                     tsearch.setFont(new Font("Arial",Font.ITALIC,20));
                 }            }
@@ -667,7 +667,7 @@ public class View extends JFrame implements Comparable<Student>{
         this.setVisible(true);
     }
     
-    
+// HÀM XUẤT THÔNG TIN RA BẢNG 
     public void ShowResult(){
        
         Object s[][] = new Object[list.size()][8];
@@ -697,6 +697,7 @@ public class View extends JFrame implements Comparable<Student>{
         table.getColumnModel().getColumn(7).setPreferredWidth(80);
     }
     
+// HÀM THÊM SINH VIÊN
     public void addStudent() throws FileNotFoundException {
         Student s = new Student();
         String id = tid.getText();
@@ -839,11 +840,9 @@ public class View extends JFrame implements Comparable<Student>{
         ShowResult();
         WriteFile();
     }
-
-// SỬA SINH VIÊN
+  
+// HÀM SỬA SINH VIÊN
     public void SuaStudent() throws FileNotFoundException {
-//            DefaultTableModel tm = (DefaultTableModel) table.getModel();
-//            int i_row = table.getSelectedRow();
             try {
                 int i_row = table.getSelectedRow();
                 if(i_row != -1){
@@ -860,7 +859,7 @@ public class View extends JFrame implements Comparable<Student>{
         
     }
     
-// XOÁ SINH VIÊN
+// HÀM XOÁ SINH VIÊN
     public void XoaStudent() throws FileNotFoundException {
         UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
 
@@ -879,6 +878,7 @@ public class View extends JFrame implements Comparable<Student>{
         }
     }
 
+    // HÀM SORT SINH VIÊN THEO GPA
     public void SortByGPA() throws FileNotFoundException {
     Collections.sort(list, new Comparator<Student>() {
             @Override
@@ -937,7 +937,8 @@ public class View extends JFrame implements Comparable<Student>{
     public int compareTo(Student o) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+   
+// HÀM GHI DỮ LIỆU VÀO FILE
     public void WriteFile() throws FileNotFoundException {
         try {
             FileOutputStream fos = new FileOutputStream(file);
@@ -951,7 +952,9 @@ public class View extends JFrame implements Comparable<Student>{
         } catch (Exception e) {
         }
     }
- public static String removeDiacritics(String input) {
+  
+
+    public static String removeDiacritics(String input) {
         if (input == null) {
             return null;
         }
@@ -959,10 +962,13 @@ public class View extends JFrame implements Comparable<Student>{
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalized).replaceAll("");
     }
+ 
+// HÀM TÌM KIẾM SINH VIÊN THEO TÊN
     public void Search() {
         DefaultTableModel md = (DefaultTableModel) table.getModel();
         md.setRowCount(0);
         String n = removeDiacritics(tsearch.getText()).toLowerCase();
+
         for(int i = 0;i < list.size();i++){
             Student s = list.get(i);
             String tenkd = removeDiacritics(s.getFisrtName());
@@ -970,20 +976,18 @@ public class View extends JFrame implements Comparable<Student>{
 
             md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
             }
-      
         }
-//          Object cname[] = {
-//            "MSSV","HỌ TÊN","TUỔI","GIỚI TÍNH","ĐỊA CHỈ","ĐIỆN THOẠI","EMAIL","GPA"
-//        };
         }
 
+// HÀM LÀM MỚI TÌM KIẾM
     public void Refresh() {
-        tsearch.setText("Nhập Họ Tên Sinh Viên");
+        tsearch.setText("Nhập Tên Sinh Viên");
         tsearch.setForeground(Color.GRAY);
         tsearch.setFont(new Font("Arial",Font.ITALIC,20));
         ShowResult();
     }
     
+// HÀM TẠO FRAME NHẬP THÔNG TIN ĐỂ LƯU
     public void Luu(){
         JFrame luu = new JFrame("Cập Nhật Thông Tin Sinh Viên");
         luu.setSize(800 , 500);
@@ -1299,6 +1303,8 @@ public class View extends JFrame implements Comparable<Student>{
         luu.add(p1,BorderLayout.SOUTH);
         luu.setVisible(true);
     }
+    
+// HÀM LƯU DỮ LIỆU SAU KHI CHỈNH SỬA
     public void save() throws FileNotFoundException{
         
         DefaultTableModel tm = (DefaultTableModel) table.getModel();

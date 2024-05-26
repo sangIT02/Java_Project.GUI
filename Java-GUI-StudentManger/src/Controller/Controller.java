@@ -86,9 +86,12 @@ public class Controller implements ActionListener{
        if(s.equals("Thoát")){
             UIManager.put("OptionPane.messageFont", new Font("Arial",Font.PLAIN,20));
             var n = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát", "Thoát", JOptionPane.OK_OPTION);
-            if(n == JOptionPane.YES_OPTION)
-            System.gc();
-            view.dispose();
+            if(n == JOptionPane.YES_OPTION){
+                System.gc();
+                view.dispose();
+                System.exit(0);
+            }
+            
        }
        if(s.equals("Tìm Kiếm")){
            view.Search();

@@ -103,7 +103,11 @@ public class Student implements Serializable{
         String[] word = this.name.split(" ");
         return word[word.length-1];
     }
-       
+    
+    public int solg(){
+        String w[] = this.name.split(" ");
+        return w.length;
+    }
     public String getLastName(){
         String[] word = this.name.split(" ");
         return word[0];
