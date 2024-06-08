@@ -974,10 +974,16 @@ public class View extends JFrame implements Comparable<Student>{
         for(int i = 0;i < list.size();i++){
             Student s = list.get(i);
             String tenkd = removeDiacritics(s.getFisrtName());
-            if(tenkd.toLowerCase().contains(n)){
-
-            md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
+            if(tenkd.toLowerCase().equals(n)){
+                md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
             }
+            else if(tenkd.toLowerCase().contains(n)){
+                md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
+            }
+            else if(n.contains(tenkd.toLowerCase())){
+                            md.addRow(new Object[]{s.getId(),s.getName(),s.getAge(),s.getGender(),s.getAddress().getXa()+" - "+s.getAddress().getHuyen()+" - "+s.getAddress().getTinh(),s.getPhone(),s.getEmail(),s.getGpa()});
+
+        }
         }
         }
 
